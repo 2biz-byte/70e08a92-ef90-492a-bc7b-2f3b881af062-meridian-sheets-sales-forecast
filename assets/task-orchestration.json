@@ -1,0 +1,23 @@
+{
+  "appId": "70e08a92-ef90-492a-bc7b-2f3b881af062:1786738365179",
+  "endpointId": "70e08a92-ef90-492a-bc7b-2f3b881af062:1786738365179",
+  "masterSkill": {
+    "title": "meridian-sheets-sales-forecast Master Skill",
+    "purpose": "Coordinate the child skills needed to complete the meridian-sheets-sales-forecast task.",
+    "successCriteria": [
+      "Complete the meridian-sheets-sales-forecast goal.",
+      "Verify all required child todos are complete before finishing."
+    ]
+  },
+  "childSkills": [],
+  "orchestratorCompletion": {
+    "id": "orchestrator-completion",
+    "title": "Verify overall task completion",
+    "successCriteria": [
+      "All required child skill todos are complete.",
+      "The final response satisfies the requested goal and success criteria."
+    ],
+    "requireAllRequiredTodos": true
+  },
+  "commitMessage": "Initial task orchestration from AI Persona endpoint"
+}
