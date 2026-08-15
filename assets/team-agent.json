@@ -8,10 +8,10 @@
     "method": "POST",
     "agentId": "70e08a92-ef90-492a-bc7b-2f3b881af062",
     "createdAt": 1786738365179,
-    "updatedAt": 1786790252176,
+    "updatedAt": 1786738375741,
     "workflow": {
       "id": "workflow_1786738375732",
-      "name": "New Workflow",
+      "name": "meridian-sheets-sales-forecast",
       "nodes": [
         {
           "id": "start_1",
@@ -22,35 +22,216 @@
           },
           "data": {
             "label": "Start",
-            "activeConnectorSide": "right"
+            "activeConnectorSide": "right",
+            "browserAgentConfig": {
+              "enabled": false
+            },
+            "inputSchema": []
+          }
+        },
+        {
+          "id": "node_structured_output",
+          "type": "structured_output",
+          "position": {
+            "x": 520,
+            "y": 222
+          },
+          "data": {
+            "label": "Structured Output",
+            "description": "Calculate 7-day sales forecast and reorder lines from pipeline inputs or seeded sell-through data",
+            "config": {
+              "prompt": "Calculate 7-day sales forecast and reorder lines using pipeline inputs when present: {{start.input.records}}, {{start.input.at_risk_skus}}, {{start.input.inventory_snapshot}}.\n\nIf pipeline inputs are empty, seed 7-day sell-through data with these SKUs:\n- AP-TEE-101, Classic Tee Black M, units_sold_7d 48, days_of_cover 1.0, suggested_qty 36, priority High\n- AP-DEN-214, Slim Denim 32, units_sold_7d 29, days_of_cover 1.0, suggested_qty 28, priority High\n- AP-HDY-088, Fleece Hoodie Navy L, units_sold_7d 33, days_of_cover 1.9, suggested_qty 24, priority High\n- AP-SOX-033, Crew Socks 3pk, units_sold_7d 41, days_of_cover 3.8, suggested_qty 30, priority Medium\n\nEmit BOTH:\n- records: array with exactly ONE patch object containing forecast_7d and reorder_lines\n- top-level forecast_7d and reorder_lines arrays (containing the exact same data)\n\nforecast_7d objects must contain fields: sku, item, units_sold_7d, days_of_cover, suggested_qty\nreorder_lines objects must contain fields: sku, item, suggested_qty, priority\n\nDo not send Gmail. Do not place a Shopify PO.",
+              "systemPrompt": "You are a sales forecast agent for Meridian. Calculate 7-day forecast and reorder lines for at-risk SKUs.",
+              "model": "gpt-4.1-mini",
+              "temperature": 0.1,
+              "maxTokens": 1200,
+              "schemaMode": "visual",
+              "fields": [
+                {
+                  "key": "records",
+                  "type": "array",
+                  "itemType": "object",
+                  "required": true,
+                  "description": "Array containing single sales forecast patch record",
+                  "itemFields": [
+                    {
+                      "key": "forecast_7d",
+                      "type": "array",
+                      "itemType": "object",
+                      "required": true,
+                      "itemFields": [
+                        {
+                          "key": "sku",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "key": "item",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "key": "units_sold_7d",
+                          "type": "number",
+                          "required": true
+                        },
+                        {
+                          "key": "days_of_cover",
+                          "type": "number",
+                          "required": true
+                        },
+                        {
+                          "key": "suggested_qty",
+                          "type": "number",
+                          "required": true
+                        }
+                      ]
+                    },
+                    {
+                      "key": "reorder_lines",
+                      "type": "array",
+                      "itemType": "object",
+                      "required": true,
+                      "itemFields": [
+                        {
+                          "key": "sku",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "key": "item",
+                          "type": "string",
+                          "required": true
+                        },
+                        {
+                          "key": "suggested_qty",
+                          "type": "number",
+                          "required": true
+                        },
+                        {
+                          "key": "priority",
+                          "type": "string",
+                          "required": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "key": "forecast_7d",
+                  "type": "array",
+                  "itemType": "object",
+                  "required": true,
+                  "itemFields": [
+                    {
+                      "key": "sku",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "key": "item",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "key": "units_sold_7d",
+                      "type": "number",
+                      "required": true
+                    },
+                    {
+                      "key": "days_of_cover",
+                      "type": "number",
+                      "required": true
+                    },
+                    {
+                      "key": "suggested_qty",
+                      "type": "number",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "key": "reorder_lines",
+                  "type": "array",
+                  "itemType": "object",
+                  "required": true,
+                  "itemFields": [
+                    {
+                      "key": "sku",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "key": "item",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "key": "suggested_qty",
+                      "type": "number",
+                      "required": true
+                    },
+                    {
+                      "key": "priority",
+                      "type": "string",
+                      "required": true
+                    }
+                  ]
+                }
+              ]
+            }
           }
         },
         {
           "id": "end_1786738369343",
           "type": "end",
           "position": {
-            "x": 620,
-            "y": 229
+            "x": 880,
+            "y": 222
           },
           "data": {
-            "label": "End",
+            "label": "Success End",
             "config": {
-              "status": "success"
+              "status": "success",
+              "responseConfig": {
+                "fields": [
+                  {
+                    "key": "records",
+                    "value": "{{node_structured_output.response.result.records}}",
+                    "type": "array"
+                  },
+                  {
+                    "key": "forecast_7d",
+                    "value": "{{node_structured_output.response.result.forecast_7d}}",
+                    "type": "array"
+                  },
+                  {
+                    "key": "reorder_lines",
+                    "value": "{{node_structured_output.response.result.reorder_lines}}",
+                    "type": "array"
+                  }
+                ]
+              }
             }
           }
         }
       ],
       "edges": [
         {
-          "id": "e_start_1_end_1786738369343_1786738372206",
+          "id": "e_start_1_node_structured_output",
           "source": "start_1",
+          "target": "node_structured_output"
+        },
+        {
+          "id": "e_node_structured_output_end_1786738369343",
+          "source": "node_structured_output",
           "target": "end_1786738369343"
         }
       ],
       "variables": [],
       "createdAt": 1786738375732,
-      "updatedAt": 1786790252165
+      "updatedAt": 1786738375732
     }
   },
-  "commitMessage": "Update meridian-sheets-sales-forecast"
+  "commitMessage": "Rebuild meridian-sheets-sales-forecast workflow without Google Sheets MCP node"
 }
