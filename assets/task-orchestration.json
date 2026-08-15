@@ -19,5 +19,5 @@
     ],
     "requireAllRequiredTodos": true
   },
-  "commitMessage": "Initial task orchestration from AI Persona endpoint"
+  "commitMessage": "Sync task orchestration from platform database"
 }
