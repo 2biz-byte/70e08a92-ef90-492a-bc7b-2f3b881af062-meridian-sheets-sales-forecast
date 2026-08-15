@@ -8,7 +8,7 @@
     "method": "POST",
     "agentId": "70e08a92-ef90-492a-bc7b-2f3b881af062",
     "createdAt": 1786738365179,
-    "updatedAt": 1786794758277,
+    "updatedAt": 1786794768469,
     "workflow": {
       "id": "workflow_1786738375732",
       "name": "meridian-sheets-sales-forecast",
@@ -230,7 +230,7 @@
       ],
       "variables": [],
       "createdAt": 1786738375732,
-      "updatedAt": 1786794758261
+      "updatedAt": 1786794768448
     }
   },
   "commitMessage": "Update meridian-sheets-sales-forecast"
